@@ -52,13 +52,8 @@ export default {
     methods: {
         calculate() {
             this.resultShares = this.shares;
-            console.log(typeof this.shares);
-            console.log(typeof this.price);
-            console.log(typeof this.annualDiv);
-            console.log(typeof this.years);
             for(let i = 0; i < this.years; i++) {
                 let totalDiv = this.resultShares * this.annualDiv;
-                console.log(totalDiv / this.price);
                 this.resultShares += totalDiv / this.price;
             }
         }
