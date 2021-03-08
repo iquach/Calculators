@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import DivCalc from '@/components/DivCalc'
+import Mortage from '@/components/Mortage'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
     path: '/DividendCalculator',
     name: "Dividend Calculator",
     component: DivCalc
+  },
+  {
+    path: '/Mortage',
+    name: "Mortage",
+    component: Mortage
   }
 ]
 

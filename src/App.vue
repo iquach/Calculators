@@ -2,14 +2,10 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
-      dark
+      color="white"
     >
-      <div class="d-flex align-center">
-      </div>
-      <v-spacer></v-spacer>
+      <v-btn color="" to="/">Home</v-btn>
     </v-app-bar>
-
     <v-main>
       <router-view></router-view>
     </v-main>
