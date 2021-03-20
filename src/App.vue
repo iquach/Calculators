@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-app-bar
+      flat
       app
       color="white"
     >

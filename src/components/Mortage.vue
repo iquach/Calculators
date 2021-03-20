@@ -1,80 +1,153 @@
 <template>
+<div>
+    <h1 class="pl-6">Mortage Calculator</h1>
     <v-row>
-        <v-col cols="4"></v-col>
-        <v-col cols="3">
-            <v-card class="pl-4 pt-4">
-                <v-text-field 
-                    v-model.number="price"
-                    label="Home Price"
-                    prefix="$"
-                    outlined
-                />
-                <v-row>
-                    <v-col cols="8">
-                        <v-text-field
-                            v-model.number="down"
-                            value="test"
-                            label="Down Payment"
-                            prefix="$"
-                            outlined
-                        />
-                    </v-col>
-                    <v-col>
-                        <v-text-field 
-                            v-model.number="downPercentage"
-                            label="Percent"
-                            suffix="%"
-                            outlined
-                        />
-                    </v-col>
-                </v-row>
-                <v-text-field
-                    v-model.number="months"
-                    label="Lenght of Loan"
-                    outlined
-                />
-                <v-text-field 
-                    v-model.number="interest"
-                    label="Interest Rate"
-                    suffix="%"
-                    outlined
-                />
-                <!-- <v-btn color="primary" @click="calculate">Submit</v-btn> -->
-                <v-row class="pt-2">
-                    <v-col>
-                        Monthly Payment: ${{result}}
-                    </v-col>
-                </v-row>
-            </v-card>
+        <!-- <v-col cols="4"></v-col> -->
+        <v-col cols="4" class="pl-8 pt-6">
+            <v-text-field 
+                v-model.number="price"
+                label="Home Price"
+                prefix="$"
+                outlined
+            />
+            <v-row>
+                <v-col cols="8">
+                    <v-text-field
+                        v-model.number="down"
+                        value="test"
+                        label="Down Payment"
+                        prefix="$"
+                        outlined
+                    />
+                </v-col>
+                <v-col>
+                    <v-text-field 
+                        v-model.number="downPercentage"
+                        label="Percent"
+                        suffix="%"
+                        outlined
+                    />
+                </v-col>
+            </v-row>
+            <v-text-field
+                v-model.number="months"
+                label="Lenght of Loan"
+                outlined
+            />
+            <v-text-field 
+                v-model.number="interest"
+                label="Interest Rate"
+                suffix="%"
+                outlined
+            />
+            <v-row>
+                <v-col>
+                    Monthly Payment: ${{result}}
+                </v-col>
+            </v-row>
+            <v-text-field 
+                v-model.number="insurance"
+                label="Homeowner's Insurance"
+                outlined
+                prefix="$"
+                class="pt-4"
+            />
+            <v-text-field 
+                v-model.number="tax"
+                label="Property Tax"
+                outlined
+                prefix="$"
+            />
+            <v-text-field 
+                v-model.number="hoa"
+                label="HOA Fees"
+                outlined
+                prefix="$"
+            />
         </v-col>
-        <!-- <v-col>
-        </v-col> -->
+        <v-col cols="8">
+            <apexchart ref="realtimeChart" width=620 :options="chartOptions" :series="series"></apexchart>
+        </v-col>
     </v-row>
+</div>
 </template>
 <script>
+import apexchart from 'vue-apexcharts'
 export default {
+    components: {
+        apexchart
+    },
     data() {
         return {
-             price: 500000,
-             down: 100000,
-             displayDown:100000,
-             downPercentage: 20,
-             displayDownPercentage: 20,
-             months: 30,
-             interest: 3.32,
-             changeFlag: false
+            price: 500000,
+            down: 100000,
+            displayDown:100000,
+            downPercentage: 20,
+            displayDownPercentage: 20,
+            months: 30,
+            interest: 3.32,
+            insurance: 66,
+            tax: 329,
+            hoa: 100,
+            changeFlag: false,
+            series:  [1756.23, 66, 329, 100],
+            
+            chartOptions: {
+                labels: ['Principal & interest', "Homeowner's insurance", 'Property tax', 'HOA fees'],
+                chart: {
+                    type: 'donut',
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true,
+                                    offsetY: -10,
+                                    formatter: function (val) {
+                                        return val+":"
+                                    }
+                                },
+                                value: {
+                                    show: true,
+                                    formatter: function (val) {
+                                        return "$"+val
+                                    }
+                                },
+                                total: {
+                                    show: true,
+                                    showAlways: false,
+                                    label: 'Total',
+                                    fontSize: '20px',
+                                    fontFamily: 'Helvetica, Arial, sans-serif',
+                                    fontWeight: 550,
+                                    color: '#373d3f',
+                                    formatter: function (w) {
+                                        return "$"+w.globals.seriesTotals.reduce((a, b) => {
+                                        // return a + b
+                                        return Math.round((a + b) * 100.0) / 100.0;
+                                        }, 0)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                responsive: [{
+                    options: {
+                        legend: {
+                        position: 'bottom'
+                        }
+                    }
+                }]
+            }
         }
     },
     methods:{
-        // calculate() {
-        //     let principle = this.price - this.down;
-        //     let monthlyInterest = (this.interest / 100) / 12; 
-        //     let totalMonths = this.months * 12;
-        //     let parentPow = Math.pow((1 + monthlyInterest), -totalMonths);
-        //     let top = principle * monthlyInterest;
-        //     let botton = 1 - parentPow;
-        //     this.result = Math.ceil((top / botton) * 100) / 100;
-        // }
+        updateSeriesLine() {
+            this.$refs.realtimeChart.updateSeries(this.series, false, true);
+        },
     },
     watch: {
         downPercentage: function(val) {
@@ -105,6 +178,22 @@ export default {
             } else {
                 this.changeFlag = !this.changeFlag;
             }
+        },
+        result: function(val) {
+            this.series[0] = val;
+            this.updateSeriesLine();
+        },
+        insurance: function(val) {
+            this.series[1] = val;
+            this.updateSeriesLine();
+        },
+        tax: function(val) {
+            this.series[2] = val;
+            this.updateSeriesLine();
+        },
+        hoa: function(val) {
+            this.series[3] = val;
+            this.updateSeriesLine();
         }
     },
     computed: {
@@ -118,7 +207,7 @@ export default {
             let bottom = parentPow - 1;
             let val = Math.ceil((top / bottom) * 100) / 100;
             return val;
-        },
+        }
     }
 }
 </script>
