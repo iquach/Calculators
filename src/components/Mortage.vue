@@ -1,14 +1,15 @@
 <template>
 <div>
-    <h1 class="pl-6">Mortage Calculator</h1>
-    <v-row>
-        <!-- <v-col cols="4"></v-col> -->
-        <v-col cols="4" class="pl-8 pt-6">
+    <h1 class="pl-4">Mortage Calculator</h1>
+    <v-row class="pl-4 pt-4">
+        <v-col cols="4" >
             <v-text-field 
                 v-model.number="price"
                 label="Home Price"
                 prefix="$"
                 outlined
+                :rules="[v => !!v || 'Home price is required']"
+                required
             />
             <v-row>
                 <v-col cols="8">
@@ -29,9 +30,10 @@
                     />
                 </v-col>
             </v-row>
-            <v-text-field
-                v-model.number="months"
-                label="Lenght of Loan"
+            <v-select
+                v-model="loanLength"
+                :items="loanLengths"
+                label="Outlined style"
                 outlined
             />
             <v-text-field 
@@ -39,6 +41,7 @@
                 label="Interest Rate"
                 suffix="%"
                 outlined
+                :rules="[v => !!v || 'Interest cannot be empty.']"
             />
             <v-row>
                 <v-col>
@@ -84,7 +87,8 @@ export default {
             displayDown:100000,
             downPercentage: 20,
             displayDownPercentage: 20,
-            months: 30,
+            loanLength: 30,
+            loanLengths: [40, 30, 25, 20, 15, 10],
             interest: 3.32,
             insurance: 66,
             tax: 329,
@@ -96,6 +100,12 @@ export default {
                 labels: ['Principal & interest', "Homeowner's insurance", 'Property tax', 'HOA fees'],
                 chart: {
                     type: 'donut',
+                    animations: {
+                        speed: 480
+                    }
+                },
+                tooltip: {
+                    enabled: false
                 },
                 plotOptions: {
                     pie: {
@@ -118,14 +128,13 @@ export default {
                                 total: {
                                     show: true,
                                     showAlways: false,
-                                    label: 'Total',
+                                    label: 'Monthly Payment',
                                     fontSize: '20px',
                                     fontFamily: 'Helvetica, Arial, sans-serif',
                                     fontWeight: 550,
                                     color: '#373d3f',
                                     formatter: function (w) {
                                         return "$"+w.globals.seriesTotals.reduce((a, b) => {
-                                        // return a + b
                                         return Math.round((a + b) * 100.0) / 100.0;
                                         }, 0)
                                     }
@@ -147,20 +156,19 @@ export default {
     methods:{
         updateSeriesLine() {
             this.$refs.realtimeChart.updateSeries(this.series, false, true);
-        },
+        }
     },
     watch: {
         downPercentage: function(val) {
+            if(val == "") {
+                this.downPercentage = 0;
+            }
             if(!this.changeFlag) {
-                // if(val == '.') {
-                //     this.downPercentage = 0.0;
-                //     val = 0.0;
-                //     console.log("here")
-                //     console.log(val);
-                //     console.log(this.downPercentage);
-                // }
+                if(val == '.') {
+                    this.downPercentage = 0.0;
+                    val = 0.0;
+                }
                 let temp = (val / 100) * this.price;
-                // this.down =  Math.floor(temp);
                 this.down = temp;
                 this.test = 2020202020
                 this.changeFlag = !this.changeFlag;
@@ -169,11 +177,13 @@ export default {
             }
         },
         down: function(val) {
+            if(val == "") {
+                this.down = 0;
+            }
             if(!this.changeFlag) {
                 let temp = (val / this.price) * 100;
                 this.downPercentage = Math.round(temp * 100.0) / 100.0;
                 this.changeFlag = false;
-                // this.downPercentage = temp;
                 this.changeFlag = !this.changeFlag;
             } else {
                 this.changeFlag = !this.changeFlag;
@@ -184,23 +194,42 @@ export default {
             this.updateSeriesLine();
         },
         insurance: function(val) {
+            if(val == "") {
+                val = 0;
+            }
             this.series[1] = val;
             this.updateSeriesLine();
         },
         tax: function(val) {
+            if(val == "") {
+                val = 0;
+            }
             this.series[2] = val;
             this.updateSeriesLine();
         },
         hoa: function(val) {
+            if(val == "") {
+                val = 0;
+            }
             this.series[3] = val;
             this.updateSeriesLine();
+        },
+        price: function(val) {
+            if(val == ""){
+                this.price = 0;
+            }
+        },
+        interest: function(val) {
+            if(val == "") {
+                this.interest = 0;
+            }
         }
     },
     computed: {
         result: function() {
             let p = this.price - this.down;
             let r = (this.interest / 100) / 12;
-            let n = this.months * 12;
+            let n = this.loanLength * 12;
             let pr = p * r;
             let parentPow = Math.pow((1 + r), n);
             let top = pr * parentPow;
