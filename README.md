@@ -1,24 +1,8 @@
 # calculator
+This is a website that contains various different calculators. 
+Currently they include
+- Divident Reinvestment (DRIP)
+- Mortage Payment
+- Student Loan (Not currently developed)
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+**Disclaimer: THIS IS A PERSONAL PROJECT USED TO PRACTICE MY WEB DEV AND AS SUCH SHOULD NOT BE USED FOR FINACIAL DECISION. I DO NOT GUARANTEE THE CORRECTNESS OF ALL VALUES GIVEN.** 
