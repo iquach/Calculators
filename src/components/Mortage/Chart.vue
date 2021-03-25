@@ -8,7 +8,13 @@ export default {
         apexchart
     },
     props: {
-        series: Array
+        series: {
+            type: Array,
+            required: true,
+            default: function () {
+                return [1756.23, 66, 329, 100]
+            }
+        }
     },
     data() {
         return {
