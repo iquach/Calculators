@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{series}}
         <v-text-field 
             v-model.number="price"
             label="Home Price"
