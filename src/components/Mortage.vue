@@ -20,6 +20,11 @@ export default {
         chart,
         forms
     },
+    data() {
+        return {
+            series: [1756.23, 66, 329, 100]
+        }
+    },
     methods:{
         getSeries(val) {
             for(let i = 0; i < 4; i++) {
@@ -27,11 +32,6 @@ export default {
             }
         }
     },
-    data() {
-        return {
-            series: [1756.23, 66, 329, 100]
-        }
-    }
 }
 </script>
 <style scoped>
