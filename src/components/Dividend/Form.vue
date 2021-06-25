@@ -78,7 +78,7 @@
         <h4>Without Divident Reinvestment</h4>
         <div>Total Value: ${{ resultWithoutDiv.totalVal }}</div>
         <div>Number of Shares: {{ resultWithoutDiv.shares }}</div>
-        <div>Dividends Paid: ${{ resultWithoutDiv.divPaid }}</div>
+        <div>Dividend Paid: ${{ resultWithoutDiv.divPaid }}</div>
         <div>Annualized Return (%): {{ resultWithoutDiv.annualReturn }}</div>
       </v-col>
     </v-row>
