@@ -74,7 +74,7 @@
         <div>Total Value: ${{ resultWithDiv.totalVal }}</div>
         <div>Number of Shares: {{ resultWithDiv.shares }}</div>
         <div>Dividend Paid: ${{ resultWithDiv.divPaid }}</div>
-        <div>Annualzied Return (%): {{ resultWithDiv.annualReturn }}</div>
+        <div>Annualized Return (%): {{ resultWithDiv.annualReturn }}</div>
         <h4>Without Divident Reinvestment</h4>
         <div>Total Value: ${{ resultWithoutDiv.totalVal }}</div>
         <div>Number of Shares: {{ resultWithoutDiv.shares }}</div>
