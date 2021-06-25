@@ -1,11 +1,9 @@
 <template>
-    <apexchart ref="realtimeChart" width=620 :options="chartOptions" :series="series"></apexchart>
+    <apexchart width=620 :options="chartOptions" :series="series"></apexchart>
 </template>
 <script>
-import apexchart from 'vue-apexcharts'
 export default {
     components:{
-        apexchart
     },
     props: {
         series: {

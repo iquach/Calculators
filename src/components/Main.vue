@@ -4,11 +4,11 @@
             <v-btn color="primary" to="/DividendCalculator">Dividend Calculator</v-btn>
         </v-row>
         <v-row class="pb-2">
-            <v-btn color="primary" to="/Mortage">Mortage Calculator</v-btn>
+            <v-btn color="primary" to="/Mortage">Mortgage Calculator</v-btn>
         </v-row>
-        <v-row>
+        <!-- <v-row>
             <v-btn color="primary">Student Loan Calculator</v-btn>
-        </v-row>
+        </v-row> -->
     </div>
 </template>
 <script>
